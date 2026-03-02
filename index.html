@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIDDEN CHARACTER INJECTOR</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👻</text></svg>">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            user-select: none; /* prevent selection everywhere */
+            -webkit-user-select: none;
+        }
+        /* allow selection only in input and output areas */
+        textarea, .OUTPUT-CONTENT {
+            user-select: text;
+            -webkit-user-select: text;
+        }
+        :root {
+            --bg-page: #f4f6fb;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-soft: #475569;
+            --border-light: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --accent: #334155;
+            --accent-bg: #f1f5f9;
+            --slider-track: #cbd5e1;
+            --slider-thumb: #0f172a;
+            --counter-bg: #ffffffd9;
+            --placeholder: #94a3b8;
+            --output-bg: #ffffff;
+            --code-bg: #e9eef3;
+            --highlight-bg: #fff3bf;
+        }
+        .dark-mode {
+            --bg-page: #0b121c;
+            --bg-card: #1e293b;
+            --text-main: #edf2f7;
+            --text-soft: #b0c4de;
+            --border-light: #334155;
+            --border-strong: #4b5565;
+            --accent: #94a3b8;
+            --accent-bg: #2d3748;
+            --slider-track: #4a5568;
+            --slider-thumb: #cbd5e1;
+            --counter-bg: #1e293be6;
+            --placeholder: #6b7b8f;
+            --output-bg: #1e293b;
+            --code-bg: #2d3748;
+            --highlight-bg: #5f4b32;
+        }
+        body {
+            background: var(--bg-page);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .card {
+            max-width: 1300px;
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: 2rem;
+            padding: 2rem 2.2rem;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
+            transition: background 0.2s;
+        }
+        .HEADER-ROW {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+        .HEADER-ROW H1 {
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .THEME-TOGGLE {
+            background: var(--accent-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 3rem;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.15s;
+            color: var(--text-main);
+        }
+        .THEME-TOGGLE:hover {
+            border-color: var(--border-strong);
+            background: var(--bg-card);
+        }
+        /* SINGLE ROW SETTINGS */
+        .SETTINGS-ROW {
+            background: var(--accent-bg);
+            border-radius: 3rem;
+            padding: 0.8rem 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-light);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1.2rem 1.8rem;
+        }
+        .PRESET-DROPDOWN {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .PRESET-DROPDOWN select {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 2rem;
+            padding: 0.4rem 2rem 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            text-transform: uppercase;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 0.7rem center;
+        }
+        .dark-mode .PRESET-DROPDOWN select {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23edf2f7' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+        }
+        .CHAR-SELECTOR {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--bg-card);
+            padding: 0.2rem;
+            border-radius: 3rem;
+            border: 1px solid var(--border-light);
+        }
+        .CHAR-OPT {
+            background: transparent;
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: 3rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .CHAR-OPT.selected {
+            background: var(--accent);
+            color: white;
+        }
+        .PER-GAP {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.2rem 0.8rem;
+            border-radius: 3rem;
+            border: 1px solid var(--border-light);
+        }
+        .PER-GAP input {
+            width: 60px;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .PER-GAP input:focus { outline: none; }
+        .DISTANCE {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            padding: 0.2rem 1rem;
+            border-radius: 3rem;
+            border: 1px solid var(--border-light);
+        }
+        .DISTANCE input[type=range] {
+            width: 90px;
+            height: 4px;
+        }
+        .DISTANCE span {
+            font-weight: 700;
+            min-width: 25px;
+            text-align: center;
+        }
+        .MAX-CONTROL {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--bg-card);
+            padding: 0.2rem;
+            border-radius: 3rem;
+            border: 1px solid var(--border-light);
+        }
+        .MAX-CONTROL input {
+            width: 70px;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .MAX-CONTROL input:focus { outline: none; }
+        .MAX-BTN {
+            background: var(--accent);
+            border: none;
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
+            color: white;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .MAX-BTN:hover { opacity: 0.9; }
+        .INPUT-SECTION {
+            margin-bottom: 2rem;
+        }
+        .INPUT-HEADER {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .PASTE-BTN {
+            background: var(--accent-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 2rem;
+            padding: 0.4rem 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+        }
+        .PASTE-BTN:hover {
+            background: var(--bg-card);
+            border-color: var(--border-strong);
+        }
+        .INPUT-WRAPPER {
+            position: relative;
+        }
+        textarea {
+            width: 100%;
+            min-height: 160px;
+            padding: 1.3rem 1.5rem;
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 2px solid var(--border-light);
+            border-radius: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: 0.15s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--border-light);
+        }
+        textarea::placeholder {
+            color: var(--placeholder);
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+        .INPUT-COUNTER {
+            position: absolute;
+            bottom: 16px;
+            right: 22px;
+            background: var(--counter-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 3rem;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-light);
+            display: flex;
+            gap: 1rem;
+            color: var(--text-main);
+            font-weight: 600;
+            pointer-events: none;
+        }
+        .STAT-ITEM {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            text-transform: uppercase;
+        }
+        .STAT-NUMBER {
+            background: var(--accent-bg);
+            padding: 0.15rem 0.55rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+        .OUTPUT-SECTION {
+            margin-top: 1.5rem;
+        }
+        .OUTPUT-WRAPPER {
+            position: relative;
+        }
+        .OUTPUT-BOX {
+            width: 100%;
+            min-height: 160px;
+            padding: 1.3rem 1.5rem;
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 2px solid var(--border-light);
+            border-radius: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.7;
+            word-break: break-word;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            overflow-y: auto;
+        }
+        .OUTPUT-CONTENT {
+            white-space: pre-wrap;
+        }
+        .HIGHLIGHT-CHAR {
+            background-color: var(--highlight-bg);
+            font-weight: bold;
+            border-radius: 3px;
+            padding: 0 1px;
+        }
+        .OUTPUT-COUNTER {
+            position: absolute;
+            bottom: 16px;
+            right: 22px;
+            background: var(--counter-bg);
+            backdrop-filter: blur(4px);
+            border-radius: 3rem;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-light);
+            display: flex;
+            gap: 1rem;
+            color: var(--text-main);
+            font-weight: 600;
+            pointer-events: none;
+        }
+        .COPY-ROW {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 0.8rem;
+        }
+        .COPY-BTN {
+            background: var(--accent-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 2.5rem;
+            padding: 0.5rem 2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.1s;
+            text-transform: uppercase;
+        }
+        .COPY-BTN:hover {
+            background: var(--bg-card);
+            border-color: var(--border-strong);
+        }
+        .REVEAL-BTN {
+            background: var(--accent);
+            border: none;
+            border-radius: 2rem;
+            padding: 0.2rem 1.2rem;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: 0.1s;
+            border: 1px solid transparent;
+            margin-left: 1rem;
+        }
+        .REVEAL-BTN:hover {
+            background: var(--accent-bg);
+            color: var(--text-main);
+            border-color: var(--border-strong);
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="card">
+        <div class="HEADER-ROW">
+            <h1>👻 HIDDEN CHARACTER INJECTOR</h1>
+            <div class="THEME-TOGGLE" id="themeToggle" title="TOGGLE LIGHT/DARK">🌙</div>
+        </div>
+
+        <!-- SINGLE ROW SETTINGS -->
+        <div class="SETTINGS-ROW">
+            <!-- PRESET DROPDOWN WITH EMOJIS -->
+            <div class="PRESET-DROPDOWN">
+                <select id="presetSelect">
+                    <option value="light">⚡ LIGHT</option>
+                    <option value="medium" selected>🔥 MEDIUM</option>
+                    <option value="extreme">💀 EXTREME</option>
+                    <option value="random">🎲 RANDOM</option>
+                </select>
+            </div>
+
+            <!-- HIDDEN CHARACTER MULTI SELECTOR -->
+            <div class="CHAR-SELECTOR" id="multiCharContainer">
+                <button data-char="\u200B" class="CHAR-OPT selected" id="multiZWSP">U+200B</button>
+                <button data-char="\u200C" class="CHAR-OPT" id="multiZWNJ">U+200C</button>
+                <button data-char="\u200D" class="CHAR-OPT" id="multiZWJ">U+200D</button>
+            </div>
+
+            <!-- PER GAP INPUT -->
+            <div class="PER-GAP">
+                <span style="font-weight:600;">PER GAP</span>
+                <input type="number" id="manualCount" min="1" max="20" value="2">
+            </div>
+
+            <!-- DISTANCE SLIDER -->
+            <div class="DISTANCE">
+                <span style="font-weight:600;">GAP</span>
+                <input type="range" id="distanceSlider" min="1" max="10" value="1" step="1">
+                <span id="distanceVal">1</span>
+            </div>
+
+            <!-- MAX HIDDEN CONTROL + MAX BUTTON -->
+            <div class="MAX-CONTROL">
+                <input type="number" id="maxHidden" min="1" max="15000" value="500" placeholder="MAX">
+                <button class="MAX-BTN" id="maxBtn">MAX</button>
+            </div>
+        </div>
+
+        <!-- INPUT SECTION -->
+        <div class="INPUT-SECTION">
+            <div class="INPUT-HEADER">
+                <label>📥 SOURCE TEXT</label>
+                <button class="PASTE-BTN" id="pasteButton"><span>📎</span> PASTE</button>
+            </div>
+            <div class="INPUT-WRAPPER">
+                <textarea id="inputText" placeholder="PASTE OR WRITE YOUR TEXT HERE..."></textarea>
+                <div class="INPUT-COUNTER">
+                    <span class="STAT-ITEM">🔤<span class="STAT-NUMBER" id="charCount">0</span></span>
+                    <span class="STAT-ITEM">📄<span class="STAT-NUMBER" id="wordCount">0</span></span>
+                    <span class="STAT-ITEM">✍️<span class="STAT-NUMBER" id="sentCount">0</span></span>
+                    <span class="STAT-ITEM">¶<span class="STAT-NUMBER" id="paraCount">0</span></span>
+                    <span class="STAT-ITEM">👻<span class="STAT-NUMBER" id="inputHiddenCount">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- OUTPUT SECTION (matches input style) -->
+        <div class="OUTPUT-SECTION">
+            <div class="INPUT-HEADER">
+                <label>📤 OUTPUT TEXT</label>
+                <button class="REVEAL-BTN" id="revealBtn">🔍 REVEAL HIDDEN</button>
+            </div>
+            <div class="OUTPUT-WRAPPER">
+                <div class="OUTPUT-BOX" id="outputDisplay">
+                    <div id="outputContent" class="OUTPUT-CONTENT">OUTPUT WILL APPEAR HERE</div>
+                </div>
+                <div class="OUTPUT-COUNTER">
+                    <span class="STAT-ITEM">🔤<span class="STAT-NUMBER" id="outCharCount">0</span></span>
+                    <span class="STAT-ITEM">📄<span class="STAT-NUMBER" id="outWordCount">0</span></span>
+                    <span class="STAT-ITEM">✍️<span class="STAT-NUMBER" id="outSentCount">0</span></span>
+                    <span class="STAT-ITEM">¶<span class="STAT-NUMBER" id="outParaCount">0</span></span>
+                    <span class="STAT-ITEM">👻<span class="STAT-NUMBER" id="hiddenCount">0</span></span>
+                </div>
+            </div>
+            <div class="COPY-ROW">
+                <button class="COPY-BTN" id="copyButton"><span>📋</span> COPY OUTPUT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const inputEl = document.getElementById('inputText');
+            const pasteBtn = document.getElementById('pasteButton');
+            const outputContentDiv = document.getElementById('outputContent');
+            const copyBtn = document.getElementById('copyButton');
+            const revealBtn = document.getElementById('revealBtn');
+            const charSpan = document.getElementById('charCount');
+            const wordSpan = document.getElementById('wordCount');
+            const sentSpan = document.getElementById('sentCount');
+            const paraSpan = document.getElementById('paraCount');
+            const inputHiddenSpan = document.getElementById('inputHiddenCount');
+            const outCharSpan = document.getElementById('outCharCount');
+            const outWordSpan = document.getElementById('outWordCount');
+            const outSentSpan = document.getElementById('outSentCount');
+            const outParaSpan = document.getElementById('outParaCount');
+            const hiddenSpan = document.getElementById('hiddenCount');
+            const distanceSlider = document.getElementById('distanceSlider');
+            const manualCount = document.getElementById('manualCount');
+            const maxHidden = document.getElementById('maxHidden');
+            const maxBtn = document.getElementById('maxBtn');
+            const distanceVal = document.getElementById('distanceVal');
+            const presetSelect = document.getElementById('presetSelect');
+            const multiZwsp = document.getElementById('multiZWSP');
+            const multiZwnj = document.getElementById('multiZWNJ');
+            const multiZwj = document.getElementById('multiZWJ');
+            const charOpts = [multiZwsp, multiZwnj, multiZwj];
+            let activeChars = new Set(['\u200B']);
+            let revealActive = false;
+            let rawOutputText = '';
+
+            function updateCharButtons() {
+                charOpts.forEach(btn => {
+                    const char = btn.dataset.char === '\\u200B' ? '\u200B' : (btn.dataset.char === '\\u200C' ? '\u200C' : '\u200D');
+                    if (activeChars.has(char)) btn.classList.add('selected');
+                    else btn.classList.remove('selected');
+                });
+            }
+            function toggleChar(char, btn) {
+                if (activeChars.has(char)) { if (activeChars.size > 1) activeChars.delete(char); else return; }
+                else activeChars.add(char);
+                updateCharButtons();
+                updateOutput();
+            }
+            multiZwsp.addEventListener('click', () => toggleChar('\u200B', multiZwsp));
+            multiZwnj.addEventListener('click', () => toggleChar('\u200C', multiZwnj));
+            multiZwj.addEventListener('click', () => toggleChar('\u200D', multiZwj));
+
+            function setPreset(amount, distance, chars) {
+                manualCount.value = amount;
+                distanceSlider.value = distance;
+                distanceVal.textContent = distance;
+                if (chars) {
+                    activeChars.clear();
+                    chars.forEach(c => activeChars.add(c));
+                    updateCharButtons();
+                }
+                updateOutput();
+            }
+
+            presetSelect.addEventListener('change', (e) => {
+                switch(e.target.value) {
+                    case 'light': setPreset(1, 10, ['\u200B']); break;
+                    case 'medium':
+                        const chars = ['\u200B', '\u200C'];
+                        if (Math.random() > 0.5) chars.reverse();
+                        setPreset(3, 3, chars);
+                        break;
+                    case 'extreme': setPreset(7, 1, ['\u200B', '\u200C', '\u200D']); break;
+                    case 'random':
+                        const randAmount = Math.floor(Math.random() * 12) + 1;
+                        const randDist = Math.floor(Math.random() * 10) + 1;
+                        const all = ['\u200B', '\u200C', '\u200D'];
+                        const shuffled = all.sort(() => 0.5 - Math.random());
+                        const count = Math.floor(Math.random() * 3) + 1;
+                        setPreset(randAmount, randDist, shuffled.slice(0, count));
+                        break;
+                }
+            });
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
+            });
+
+            pasteBtn.addEventListener('click', async () => {
+                try { inputEl.value = await navigator.clipboard.readText(); updateAll(); }
+                catch { alert('CLIPBOARD READ FAILED'); }
+            });
+
+            maxBtn.addEventListener('click', () => {
+                maxHidden.value = 15000;
+                updateOutput();
+            });
+
+            function countHiddenChars(str) {
+                let cnt = 0;
+                for (let ch of str) if (activeChars.has(ch)) cnt++;
+                return cnt;
+            }
+
+            function updateInputCounts() {
+                const text = inputEl.value;
+                charSpan.textContent = text.length;
+                const words = text.trim() ? text.trim().split(/\s+/).filter(w => w.length > 0) : [];
+                wordSpan.textContent = words.length;
+                let sents = 0;
+                if (text.trim()) {
+                    const matches = text.match(/[.!?…]+(\s|$)/g);
+                    sents = matches ? matches.length : 0;
+                    if (sents === 0 && text.trim().length > 0) sents = 1;
+                }
+                sentSpan.textContent = sents;
+                let paras = 0;
+                if (text.trim()) {
+                    const blocks = text.split(/\n\s*\n/).filter(b => b.trim().length > 0);
+                    paras = blocks.length || 1;
+                }
+                paraSpan.textContent = paras;
+                inputHiddenSpan.textContent = countHiddenChars(text);
+            }
+
+            function randomCharFromSet() {
+                const arr = Array.from(activeChars);
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            function generateInjectedText() {
+                const source = inputEl.value;
+                if (!source.trim()) return '';
+                let perGap = parseInt(manualCount.value, 10);
+                if (isNaN(perGap) || perGap < 1) perGap = 1;
+                const distance = parseInt(distanceSlider.value, 10);
+                let maxTotal = parseInt(maxHidden.value, 10);
+                if (isNaN(maxTotal) || maxTotal < 1) maxTotal = 15000;
+                const parts = source.split(/(\s+)/);
+                let result = '';
+                let wordIndex = 0;
+                let totalInserted = 0;
+                for (let i = 0; i < parts.length; i++) {
+                    const seg = parts[i];
+                    const isWs = /^\s+$/.test(seg);
+                    if (!isWs && seg.length > 0) {
+                        result += seg;
+                        wordIndex++;
+                        const nextIdx = i + 1;
+                        const nextNextIdx = i + 2;
+                        const hasNext = (nextIdx < parts.length && /^\s+$/.test(parts[nextIdx]) && nextNextIdx < parts.length && !/^\s+$/.test(parts[nextNextIdx]));
+                        if (hasNext && (wordIndex % distance === 0)) {
+                            let insertNow = Math.min(perGap, maxTotal - totalInserted);
+                            if (insertNow > 0) {
+                                for (let j = 0; j < insertNow; j++) {
+                                    result += randomCharFromSet();
+                                }
+                                totalInserted += insertNow;
+                            }
+                        }
+                    } else {
+                        result += seg;
+                    }
+                }
+                return result;
+            }
+
+            function updateOutputStats(injected) {
+                rawOutputText = injected;
+                outCharSpan.textContent = injected.length;
+                const outWords = injected.trim() ? injected.trim().split(/\s+/).filter(w => w.length > 0) : [];
+                outWordSpan.textContent = outWords.length;
+                let s = 0;
+                if (injected.trim()) {
+                    const m = injected.match(/[.!?…]+(\s|$)/g);
+                    s = m ? m.length : 0;
+                    if (s === 0 && injected.trim().length > 0) s = 1;
+                }
+                outSentSpan.textContent = s;
+                let p = 0;
+                if (injected.trim()) {
+                    const b = injected.split(/\n\s*\n/).filter(b => b.trim().length > 0);
+                    p = b.length || 1;
+                }
+                outParaSpan.textContent = p;
+                hiddenSpan.textContent = countHiddenChars(injected);
+            }
+
+            function renderOutput() {
+                const injected = generateInjectedText();
+                if (!inputEl.value.trim()) {
+                    outputContentDiv.innerText = 'OUTPUT WILL APPEAR HERE';
+                    outCharSpan.textContent = outWordSpan.textContent = outSentSpan.textContent = outParaSpan.textContent = hiddenSpan.textContent = '0';
+                    rawOutputText = '';
+                    return;
+                }
+                if (!revealActive) {
+                    outputContentDiv.innerText = injected;
+                } else {
+                    let html = '';
+                    for (let ch of injected) {
+                        if (activeChars.has(ch)) {
+                            html += `<span class="HIGHLIGHT-CHAR">␣</span>`;
+                        } else {
+                            html += ch;
+                        }
+                    }
+                    outputContentDiv.innerHTML = html;
+                }
+                updateOutputStats(injected);
+            }
+
+            function updateOutput() {
+                renderOutput();
+            }
+
+            function updateAll() {
+                updateInputCounts();
+                updateOutput();
+            }
+
+            distanceSlider.addEventListener('input', () => {
+                distanceVal.textContent = distanceSlider.value;
+                updateOutput();
+            });
+            manualCount.addEventListener('input', () => {
+                let val = parseInt(manualCount.value, 10);
+                if (isNaN(val) || val < 1) val = 1;
+                manualCount.value = val;
+                updateOutput();
+            });
+            maxHidden.addEventListener('input', () => {
+                let val = parseInt(maxHidden.value, 10);
+                if (isNaN(val) || val < 1) val = 1;
+                if (val > 15000) val = 15000;
+                maxHidden.value = val;
+                updateOutput();
+            });
+            inputEl.addEventListener('input', updateAll);
+
+            copyBtn.addEventListener('click', async () => {
+                if (!rawOutputText || rawOutputText === '') {
+                    alert('NOTHING TO COPY');
+                    return;
+                }
+                await navigator.clipboard.writeText(rawOutputText);
+                copyBtn.innerHTML = '<span>✅</span> COPIED!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<span>📋</span> COPY OUTPUT';
+                }, 1500);
+            });
+
+            revealBtn.addEventListener('click', () => {
+                revealActive = !revealActive;
+                revealBtn.textContent = revealActive ? '🔍 HIDE REVEAL' : '🔍 REVEAL HIDDEN';
+                renderOutput();
+            });
+
+            updateCharButtons();
+            updateAll();
+        })();
+    </script>
+</body>
+</html>
