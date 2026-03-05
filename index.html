@@ -5,685 +5,607 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HIDDEN CHARACTER INJECTOR</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👻</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            padding: 0;
             user-select: none;
             -webkit-user-select: none;
         }
-        textarea, .OUTPUT-CONTENT, .HOW-TO-CONTENT {
+        textarea, .output-content {
             user-select: text;
             -webkit-user-select: text;
         }
         :root {
-            --bg-page: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f1f5f9;
-            --text-soft: #94a3b8;
-            --border-light: #334155;
-            --border-strong: #4b5565;
-            --accent: #8b5cf6;
-            --accent-bg: #2d3748;
-            --slider-track: #4a5568;
-            --slider-thumb: #cbd5e1;
-            --counter-bg: #1e293be6;
-            --placeholder: #6b7b8f;
-            --output-bg: #1e293b;
-            --code-bg: #2d3748;
-            --highlight-bg: #5f4b32;
-            --tooltip-bg: #334155;
-            --tooltip-text: #f1f5f9;
-            --howto-bg: #2d3748;
-            --github-hover: #6d28d9;
+            --bg: #080b12;
+            --surface: rgba(255,255,255,0.04);
+            --surface-hover: rgba(255,255,255,0.07);
+            --border: rgba(255,255,255,0.08);
+            --border-bright: rgba(0,255,200,0.3);
+            --accent: #00ffc8;
+            --accent-dim: rgba(0,255,200,0.12);
+            --text: #e8edf5;
+            --text-muted: #6b7c93;
+            --glow: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,255,200,0.06) 0%, transparent 70%);
+            --radius-pill: 3rem;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --scrollbar-thumb: rgba(0,255,200,0.25);
+            --scrollbar-track: rgba(255,255,255,0.02);
+            --ai-green: #00ffc8;
+            --ai-red: #ff4d4d;
         }
         body {
-            background: var(--bg-page);
-            color: var(--text-main);
+            background: var(--bg);
+            background-image: var(--glow);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
-            transition: background 0.2s, color 0.2s;
+            padding: 2rem;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
         }
-        .card {
-            max-width: 1300px;
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+        .app-container {
+            max-width: 1600px;
             width: 100%;
-            background: var(--bg-card);
-            border-radius: 2.5rem;
-            padding: 2rem 2.2rem;
-            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.5);
-            transition: background 0.2s;
-            border: 1px solid var(--border-light);
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2.5rem;
+            align-items: start;
         }
-        .HEADER-ROW {
+        .settings-panel {
+            position: sticky;
+            top: 2rem;
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            height: fit-content;
+        }
+        .header-mini {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            width: 100%;
+        }
+        .header-mini h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            white-space: nowrap;
+            text-align: center;
+        }
+        .how-to-container {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            overflow: hidden;
+        }
+        .how-to-toggle {
+            background: var(--surface);
+            padding: 0.8rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-        }
-        .HEADER-ROW H1 {
-            font-weight: 700;
-            font-size: 2rem;
-            letter-spacing: -0.02em;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .HEADER-RIGHT {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .GITHUB-BTN {
-            background: var(--accent-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 2rem;
-            padding: 0.5rem 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: 0.15s;
-        }
-        .GITHUB-BTN:hover {
-            background: var(--github-hover);
-            border-color: var(--accent);
-            color: white;
-        }
-        .THEME-TOGGLE {
-            background: var(--accent-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 3rem;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
             cursor: pointer;
-            transition: 0.15s;
-            color: var(--text-main);
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            transition: var(--transition);
         }
-        .THEME-TOGGLE:hover {
-            border-color: var(--accent);
-            background: var(--bg-card);
+        .how-to-toggle:hover {
+            background: var(--surface-hover);
         }
-
-        /* IMPROVED HOW TO SECTION */
-        .HOW-TO {
-            background: var(--howto-bg);
-            border-radius: 2rem;
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-light);
+        .how-to-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: var(--surface);
+            border-top: 0px solid var(--border);
+        }
+        .how-to-content.expanded {
+            max-height: 300px;
+            border-top-width: 1px;
+        }
+        .how-to-steps {
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
-        .HOW-TO-TITLE {
-            font-weight: 700;
-            font-size: 1.2rem;
+        .how-to-step {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
-        .HOW-TO-GRID {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.2rem 2rem;
-            align-items: center;
-        }
-        .HOW-TO-STEP {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--bg-card);
-            padding: 0.6rem 1.4rem;
-            border-radius: 3rem;
-            border: 1px solid var(--border-light);
-        }
-        .STEP-NUMBER {
-            background: var(--accent);
-            color: white;
-            width: 28px;
-            height: 28px;
+        .step-marker {
+            background: var(--accent-dim);
+            border: 1px solid var(--border-bright);
             border-radius: 50%;
+            width: 26px;
+            height: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Space Mono', monospace;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
+            color: var(--accent);
         }
-        .STEP-TEXT {
-            font-weight: 500;
-            color: var(--text-main);
-        }
-        .STEP-DESC {
-            color: var(--text-soft);
-            font-size: 0.8rem;
-            max-width: 200px;
-        }
-
-        /* SETTINGS ROW */
-        .SETTINGS-ROW {
-            background: var(--accent-bg);
-            border-radius: 3rem;
-            padding: 1rem 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-light);
+        .settings-section {
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 1.2rem 2.2rem;
+            flex-direction: column;
+            gap: 0.8rem;
         }
-        .PRESET-DROPDOWN {
-            display: flex;
-            align-items: center;
+        .section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+        }
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 0.5rem;
         }
-        .PRESET-DROPDOWN select {
-            background: var(--bg-card);
-            border: 1px solid var(--border-light);
-            border-radius: 2rem;
-            padding: 0.5rem 2.2rem 0.5rem 1.4rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-main);
-            cursor: pointer;
-            text-transform: uppercase;
-            appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
-            background-repeat: no-repeat;
-            background-position: right 0.8rem center;
-        }
-        .TOOLTIP-CONTAINER {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-        }
-        .TOOLTIP-ICON {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.6rem;
-            font-weight: bold;
-            cursor: help;
-            margin-left: 4px;
-        }
-        .TOOLTIP-TEXT {
-            visibility: hidden;
-            position: absolute;
-            bottom: 150%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--tooltip-bg);
-            color: var(--tooltip-text);
-            padding: 0.5rem 1rem;
-            border-radius: 1rem;
-            font-size: 0.75rem;
-            white-space: nowrap;
-            font-weight: 500;
-            opacity: 0;
-            transition: opacity 0.2s;
-            pointer-events: none;
-            z-index: 1000;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .TOOLTIP-CONTAINER:hover .TOOLTIP-TEXT {
-            visibility: visible;
-            opacity: 1;
-        }
-        .CHAR-SELECTOR {
-            display: flex;
-            align-items: center;
-            gap: 0.2rem;
-            background: var(--bg-card);
-            padding: 0.2rem;
-            border-radius: 3rem;
-            border: 1px solid var(--border-light);
-        }
-        .CHAR-OPT {
+        .preset-btn {
             background: transparent;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 3rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: 0.1s;
-        }
-        .CHAR-OPT.selected {
-            background: var(--accent);
-            color: white;
-        }
-        .PER-GAP {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: var(--bg-card);
-            padding: 0.3rem 1rem;
-            border-radius: 3rem;
-            border: 1px solid var(--border-light);
-        }
-        .PER-GAP input {
-            width: 60px;
-            background: transparent;
-            border: none;
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-        .DISTANCE {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: var(--bg-card);
-            padding: 0.3rem 1rem;
-            border-radius: 3rem;
-            border: 1px solid var(--border-light);
-        }
-        .DISTANCE input[type=range] {
-            width: 90px;
-            height: 4px;
-        }
-        .DISTANCE span {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            padding: 0.5rem 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .preset-btn:hover {
+            border-color: var(--border-bright);
+            color: var(--accent);
+        }
+        .char-selector {
+            display: flex;
+            gap: 0.2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            padding: 0.2rem;
+        }
+        .char-opt {
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-pill);
+            padding: 0.4rem 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .char-opt.selected {
+            color: var(--accent);
+            border: 1px solid var(--border-bright);
+            background: var(--accent-dim);
+        }
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            padding: 0.4rem 1rem;
+        }
+        .control-row label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+        .control-row input[type="number"] {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            width: 50px;
+            text-align: right;
+        }
+        .control-row input[type="range"] {
+            width: 100px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            -webkit-appearance: none;
+        }
+        .control-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .distance-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
             min-width: 25px;
             text-align: center;
         }
-        .MAX-CONTROL {
+        .content-panel {
             display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            background: var(--bg-card);
-            padding: 0.2rem 0.2rem 0.2rem 1rem;
-            border-radius: 3rem;
-            border: 1px solid var(--border-light);
+            flex-direction: column;
+            gap: 2rem;
         }
-        .MAX-CONTROL input {
-            width: 70px;
-            background: transparent;
-            border: none;
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-align: center;
+        .io-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
         }
-        .MAX-BTN {
-            background: var(--accent);
-            border: none;
-            border-radius: 2rem;
-            padding: 0.4rem 1.2rem;
-            color: white;
-            font-weight: 700;
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.1s;
+        .io-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
-        .MAX-BTN:hover {
-            background: #7c3aed;
-        }
-        .INPUT-SECTION {
-            margin-bottom: 2rem;
-        }
-        .INPUT-HEADER {
+        .io-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.8rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
         }
-        .PASTE-BTN {
-            background: var(--accent-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 2rem;
-            padding: 0.4rem 1.5rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-main);
-            cursor: pointer;
+        .io-header-left {
             display: flex;
+            gap: 0.5rem;
             align-items: center;
-            gap: 6px;
-            text-transform: uppercase;
         }
-        .PASTE-BTN:hover {
-            background: var(--bg-card);
-            border-color: var(--accent);
-        }
-        .INPUT-WRAPPER {
+        .textbox-wrapper {
             position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
-        textarea {
+        textarea, .output-display {
             width: 100%;
-            min-height: 160px;
-            padding: 1.3rem 1.5rem;
-            background: var(--bg-card);
-            color: var(--text-main);
-            border: 2px solid var(--border-light);
-            border-radius: 1.8rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            resize: vertical;
-            transition: 0.15s;
+            height: 350px;
+            min-height: 350px;
+            padding: 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text);
+            resize: none;
+            transition: var(--transition);
         }
         textarea:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 0 2px var(--accent), 0 0 20px rgba(0,255,200,0.15);
         }
-        .INPUT-COUNTER {
-            position: absolute;
-            bottom: 16px;
-            right: 22px;
-            background: var(--counter-bg);
-            backdrop-filter: blur(4px);
-            border-radius: 3rem;
-            padding: 0.4rem 1.2rem;
-            font-size: 0.85rem;
-            border: 1px solid var(--border-light);
+        .output-display {
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
             display: flex;
-            gap: 1rem;
-            color: var(--text-main);
-            font-weight: 600;
-            pointer-events: none;
+            flex-direction: column;
         }
-        .STAT-ITEM {
+        .output-content {
+            white-space: pre-wrap;
+            margin: 0;
+            padding: 0;
+        }
+        .highlight-char {
+            background-color: var(--accent-dim);
+            color: var(--accent);
+            font-weight: bold;
+            border-radius: 2px;
+            padding: 0 2px;
+        }
+        .stats-row {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.5rem 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .stat-item {
             display: flex;
             align-items: center;
             gap: 0.3rem;
-            text-transform: uppercase;
         }
-        .STAT-NUMBER {
-            background: var(--accent-bg);
-            padding: 0.15rem 0.55rem;
+        .ai-percent {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.6rem;
             border-radius: 2rem;
-            font-weight: 700;
-            font-size: 0.75rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            margin-left: auto;
+            transition: var(--transition);
         }
-        .OUTPUT-SECTION {
-            margin-top: 1.5rem;
-        }
-        .OUTPUT-WRAPPER {
-            position: relative;
-        }
-        .OUTPUT-BOX {
-            width: 100%;
-            min-height: 160px;
-            padding: 1.3rem 1.5rem;
-            background: var(--bg-card);
-            color: var(--text-main);
-            border: 2px solid var(--border-light);
-            border-radius: 1.8rem;
-            font-size: 1rem;
-            line-height: 1.7;
-            word-break: break-word;
-            white-space: pre-wrap;
-            font-family: 'Courier New', monospace;
-            overflow-y: auto;
-        }
-        .OUTPUT-CONTENT {
-            white-space: pre-wrap;
-        }
-        .HIGHLIGHT-CHAR {
-            background-color: var(--highlight-bg);
-            font-weight: bold;
-            border-radius: 3px;
-            padding: 0 1px;
-        }
-        .OUTPUT-COUNTER {
-            position: absolute;
-            bottom: 16px;
-            right: 22px;
-            background: var(--counter-bg);
-            backdrop-filter: blur(4px);
-            border-radius: 3rem;
+        .action-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
             padding: 0.4rem 1.2rem;
-            font-size: 0.85rem;
-            border: 1px solid var(--border-light);
-            display: flex;
-            gap: 1rem;
-            color: var(--text-main);
-            font-weight: 600;
-            pointer-events: none;
-        }
-        .COPY-ROW {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 1rem;
-        }
-        .COPY-BTN {
-            background: var(--accent);
-            border: none;
-            border-radius: 2.5rem;
-            padding: 0.6rem 2.2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            color: white;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
             cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            min-width: 80px;
+            justify-content: center;
+        }
+        .action-btn:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+        .copy-success {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 2px var(--accent) !important;
+        }
+        .site-footer {
+            margin-top: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem 2rem;
+            flex: 1;
+        }
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: var(--transition);
+        }
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        .social-links {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            margin-left: auto;
+        }
+        .social-link {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: 0.1s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .COPY-BTN:hover {
-            background: #7c3aed;
-        }
-        .REVEAL-BTN {
-            background: var(--accent-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 2rem;
-            padding: 0.3rem 1.4rem;
-            color: var(--text-main);
-            font-weight: 600;
+            justify-content: center;
             cursor: pointer;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            transition: 0.1s;
+            transition: var(--transition);
+            color: var(--text-muted);
+            text-decoration: none;
         }
-        .REVEAL-BTN:hover {
-            background: var(--bg-card);
-            border-color: var(--accent);
+        .social-link:hover {
+            border-color: var(--border-bright);
+            color: var(--accent);
+            background: var(--surface-hover);
+        }
+        .social-link svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        .copyright {
+            color: var(--text-muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-align: center;
+            width: 100%;
         }
     </style>
 </head>
-<body class="dark-mode">
-    <div class="card">
-        <div class="HEADER-ROW">
-            <h1>👻 HIDDEN CHARACTER INJECTOR</h1>
-            <div class="HEADER-RIGHT">
-                <a href="https://github.com/VenomousRhyme41/Hidden-Character-Injector" target="_blank" class="GITHUB-BTN">
-                    <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-                    </svg>
-                    <span>GitHub</span>
-                </a>
-                <div class="THEME-TOGGLE" id="themeToggle" title="TOGGLE LIGHT/DARK">🌙</div>
+<body>
+    <div class="app-container">
+        <div class="settings-panel">
+            <div class="header-mini">
+                <h1>HIDDEN INJECTOR</h1>
             </div>
-        </div>
-
-        <!-- IMPROVED HOW TO SECTION -->
-        <div class="HOW-TO">
-            <div class="HOW-TO-TITLE">
-                <span>📘</span> HOW TO USE THIS TOOL
-            </div>
-            <div class="HOW-TO-GRID">
-                <div class="HOW-TO-STEP">
-                    <span class="STEP-NUMBER">1</span>
-                    <div>
-                        <div class="STEP-TEXT">PASTE YOUR TEXT</div>
-                        <div class="STEP-DESC">Copy any text into the input box below</div>
-                    </div>
+            <div class="how-to-container">
+                <div class="how-to-toggle" id="howToToggle">
+                    <span>📘 HOW TO USE</span>
+                    <span>▸</span>
                 </div>
-                <div class="HOW-TO-STEP">
-                    <span class="STEP-NUMBER">2</span>
-                    <div>
-                        <div class="STEP-TEXT">CHOOSE HIDDEN CHARS</div>
-                        <div class="STEP-DESC">Select one or more invisible characters (all 3 default)</div>
-                    </div>
-                </div>
-                <div class="HOW-TO-STEP">
-                    <span class="STEP-NUMBER">3</span>
-                    <div>
-                        <div class="STEP-TEXT">SET PER GAP & DISTANCE</div>
-                        <div class="STEP-DESC">How many per insertion & how often</div>
-                    </div>
-                </div>
-                <div class="HOW-TO-STEP">
-                    <span class="STEP-NUMBER">4</span>
-                    <div>
-                        <div class="STEP-TEXT">ADJUST MAX HIDDEN</div>
-                        <div class="STEP-DESC">Set total limit or hit MAX for 15,000</div>
-                    </div>
-                </div>
-                <div class="HOW-TO-STEP">
-                    <span class="STEP-NUMBER">5</span>
-                    <div>
-                        <div class="STEP-TEXT">COPY & REVEAL</div>
-                        <div class="STEP-DESC">Copy raw output or toggle reveal mode</div>
+                <div class="how-to-content" id="howToContent">
+                    <div class="how-to-steps">
+                        <div class="how-to-step"><span class="step-marker">1</span> PASTE TEXT IN LEFT BOX</div>
+                        <div class="how-to-step"><span class="step-marker">2</span> SELECT HIDDEN CHARS (MULTI)</div>
+                        <div class="how-to-step"><span class="step-marker">3</span> SET PER GAP / DISTANCE</div>
+                        <div class="how-to-step"><span class="step-marker">4</span> COPY OUTPUT & REVEAL</div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- SETTINGS ROW -->
-        <div class="SETTINGS-ROW">
-            <!-- PRESET -->
-            <div class="PRESET-DROPDOWN">
-                <select id="presetSelect">
-                    <option value="light">⚡ LIGHT</option>
-                    <option value="medium" selected>🔥 MEDIUM</option>
-                    <option value="extreme">💀 EXTREME</option>
-                    <option value="random">🎲 RANDOM</option>
-                </select>
-                <div class="TOOLTIP-CONTAINER">
-                    <span class="TOOLTIP-ICON">?</span>
-                    <span class="TOOLTIP-TEXT">QUICK PRESETS: Light(1/10), Medium(3/3 mixed), Extreme(7/1 all chars), Random</span>
+            <div class="settings-section">
+                <div class="section-title">PRESETS</div>
+                <div class="preset-grid">
+                    <button class="preset-btn" id="presetLight">LIGHT</button>
+                    <button class="preset-btn" id="presetMedium">MEDIUM</button>
+                    <button class="preset-btn" id="presetExtreme">EXTREME</button>
+                    <button class="preset-btn" id="presetRandom">RANDOM</button>
                 </div>
             </div>
-
-            <!-- HIDDEN CHARS (all 3 selected) -->
-            <div style="display: flex; align-items: center;">
-                <div class="CHAR-SELECTOR" id="multiCharContainer">
-                    <button data-char="\u200B" class="CHAR-OPT selected" id="multiZWSP">U+200B</button>
-                    <button data-char="\u200C" class="CHAR-OPT selected" id="multiZWNJ">U+200C</button>
-                    <button data-char="\u200D" class="CHAR-OPT selected" id="multiZWJ">U+200D</button>
-                </div>
-                <div class="TOOLTIP-CONTAINER">
-                    <span class="TOOLTIP-ICON">?</span>
-                    <span class="TOOLTIP-TEXT">ZWSP (U+200B), ZWNJ (U+200C), ZWJ (U+200D) — multi-select allowed</span>
+            <div class="settings-section">
+                <div class="section-title">HIDDEN CHARACTERS</div>
+                <div class="char-selector" id="multiCharContainer">
+                    <button data-char="\u200B" class="char-opt selected" id="multiZWSP">U+200B</button>
+                    <button data-char="\u200C" class="char-opt selected" id="multiZWNJ">U+200C</button>
+                    <button data-char="\u200D" class="char-opt selected" id="multiZWJ">U+200D</button>
                 </div>
             </div>
-
-            <!-- PER GAP -->
-            <div style="display: flex; align-items: center;">
-                <div class="PER-GAP">
-                    <span style="font-weight:600;">PER GAP</span>
+            <div class="settings-section">
+                <div class="section-title">PER GAP</div>
+                <div class="control-row">
+                    <label>COUNT</label>
                     <input type="number" id="manualCount" min="1" max="20" value="2">
                 </div>
-                <div class="TOOLTIP-CONTAINER">
-                    <span class="TOOLTIP-ICON">?</span>
-                    <span class="TOOLTIP-TEXT">Number of hidden characters inserted each time (1-20)</span>
-                </div>
             </div>
-
-            <!-- DISTANCE -->
-            <div style="display: flex; align-items: center;">
-                <div class="DISTANCE">
-                    <span style="font-weight:600;">GAP</span>
+            <div class="settings-section">
+                <div class="section-title">DISTANCE</div>
+                <div class="control-row">
+                    <label>EVERY</label>
                     <input type="range" id="distanceSlider" min="1" max="10" value="1" step="1">
-                    <span id="distanceVal">1</span>
-                </div>
-                <div class="TOOLTIP-CONTAINER">
-                    <span class="TOOLTIP-ICON">?</span>
-                    <span class="TOOLTIP-TEXT">Insert every N words (1 = every word, 2 = every other word, etc.)</span>
-                </div>
-            </div>
-
-            <!-- MAX CONTROL (independent) -->
-            <div style="display: flex; align-items: center;">
-                <div class="MAX-CONTROL">
-                    <input type="number" id="maxHidden" min="1" max="15000" value="500" placeholder="MAX">
-                    <button class="MAX-BTN" id="maxBtn">MAX</button>
-                </div>
-                <div class="TOOLTIP-CONTAINER">
-                    <span class="TOOLTIP-ICON">?</span>
-                    <span class="TOOLTIP-TEXT">Total hidden character limit. MAX = 15,000 (sets distance to 1, leaves other settings unchanged)</span>
+                    <span class="distance-value" id="distanceVal">1</span>
                 </div>
             </div>
         </div>
-
-        <!-- INPUT SECTION -->
-        <div class="INPUT-SECTION">
-            <div class="INPUT-HEADER">
-                <label>📥 SOURCE TEXT</label>
-                <button class="PASTE-BTN" id="pasteButton"><span>📎</span> PASTE</button>
-            </div>
-            <div class="INPUT-WRAPPER">
-                <textarea id="inputText" placeholder="PASTE OR WRITE YOUR TEXT HERE..."></textarea>
-                <div class="INPUT-COUNTER">
-                    <span class="STAT-ITEM">🔤<span class="STAT-NUMBER" id="charCount">0</span></span>
-                    <span class="STAT-ITEM">📄<span class="STAT-NUMBER" id="wordCount">0</span></span>
-                    <span class="STAT-ITEM">✍️<span class="STAT-NUMBER" id="sentCount">0</span></span>
-                    <span class="STAT-ITEM">¶<span class="STAT-NUMBER" id="paraCount">0</span></span>
-                    <span class="STAT-ITEM">👻<span class="STAT-NUMBER" id="inputHiddenCount">0</span></span>
+        <div class="content-panel">
+            <div class="io-grid">
+                <div class="io-column">
+                    <div class="io-header">
+                        <span>📥 INPUT</span>
+                        <button class="action-btn" id="pasteButton">📎 PASTE</button>
+                    </div>
+                    <div class="textbox-wrapper">
+                        <textarea id="inputText" placeholder="PASTE OR WRITE TEXT HERE..."></textarea>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stat-item">🔤 <span id="charCount">0</span></span>
+                        <span class="stat-item">📄 <span id="wordCount">0</span></span>
+                        <span class="stat-item">✍️ <span id="sentCount">0</span></span>
+                        <span class="stat-item">¶ <span id="paraCount">0</span></span>
+                        <span class="stat-item">👻 <span id="inputHiddenCount">0</span></span>
+                        <span class="ai-percent" id="inputAIPercent">100% AI</span>
+                    </div>
+                </div>
+                <div class="io-column">
+                    <div class="io-header">
+                        <div class="io-header-left">
+                            <span>📤 OUTPUT</span>
+                            <button class="action-btn" id="revealBtn">🔍 REVEAL</button>
+                        </div>
+                        <button class="action-btn" id="copyButton"><span>📋</span> COPY</button>
+                    </div>
+                    <div class="textbox-wrapper">
+                        <div class="output-display" id="outputDisplay">
+                            <div class="output-content" id="outputContent">OUTPUT WILL APPEAR HERE</div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <span class="stat-item">🔤 <span id="outCharCount">0</span></span>
+                        <span class="stat-item">📄 <span id="outWordCount">0</span></span>
+                        <span class="stat-item">✍️ <span id="outSentCount">0</span></span>
+                        <span class="stat-item">¶ <span id="outParaCount">0</span></span>
+                        <span class="stat-item">👻 <span id="hiddenCount">0</span></span>
+                        <span class="ai-percent" id="outputAIPercent">0% AI</span>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="OUTPUT-SECTION">
-            <div class="INPUT-HEADER">
-                <label>📤 OUTPUT TEXT</label>
-                <button class="REVEAL-BTN" id="revealBtn">🔍 REVEAL HIDDEN</button>
-            </div>
-            <div class="OUTPUT-WRAPPER">
-                <div class="OUTPUT-BOX" id="outputDisplay">
-                    <div id="outputContent" class="OUTPUT-CONTENT">OUTPUT WILL APPEAR HERE</div>
+            <div class="site-footer">
+                <div class="footer-main">
+                    <div class="footer-links">
+                        <a href="https://hiddencharacterinjector.online/terms">TERMS OF SERVICE</a>
+                        <a href="https://hiddencharacterinjector.online/privacy">PRIVACY POLICY</a>
+                        <a href="https://hiddencharacterinjector.online/sitemap">SITEMAP</a>
+                        <a href="https://hiddencharacterinjector.online/about">ABOUT US</a>
+                        <a href="https://hiddencharacterinjector.online/contact">CONTACT</a>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://github.com/VenomousRhyme41/Hidden-Character-Injector" target="_blank" class="social-link">
+                            <svg viewBox="0 0 16 16">
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" target="_blank" class="social-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                        <a href="#" target="_blank" class="social-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22.018 5.924a8.464 8.464 0 0 1-2.437.668 4.256 4.256 0 0 0 1.866-2.35 8.493 8.493 0 0 1-2.696 1.03 4.242 4.242 0 0 0-7.224 3.87 12.04 12.04 0 0 1-8.74-4.43 4.242 4.242 0 0 0 1.313 5.663 4.204 4.204 0 0 1-1.92-.53v.053a4.245 4.245 0 0 0 3.4 4.158 4.21 4.21 0 0 1-1.91.072 4.244 4.244 0 0 0 3.963 2.945 8.506 8.506 0 0 1-5.27 1.817 8.61 8.61 0 0 1-1.01-.06 12.015 12.015 0 0 0 6.514 1.91c7.828 0 12.11-6.485 12.11-12.11 0-.185-.004-.37-.013-.553a8.64 8.64 0 0 0 2.122-2.202z"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="OUTPUT-COUNTER">
-                    <span class="STAT-ITEM">🔤<span class="STAT-NUMBER" id="outCharCount">0</span></span>
-                    <span class="STAT-ITEM">📄<span class="STAT-NUMBER" id="outWordCount">0</span></span>
-                    <span class="STAT-ITEM">✍️<span class="STAT-NUMBER" id="outSentCount">0</span></span>
-                    <span class="STAT-ITEM">¶<span class="STAT-NUMBER" id="outParaCount">0</span></span>
-                    <span class="STAT-ITEM">👻<span class="STAT-NUMBER" id="hiddenCount">0</span></span>
-                </div>
-            </div>
-            <div class="COPY-ROW">
-                <button class="COPY-BTN" id="copyButton"><span>📋</span> COPY OUTPUT</button>
+                <div class="copyright">© 2026 MORS TEAM. ALL RIGHTS RESERVED.</div>
             </div>
         </div>
     </div>
-
     <script>
         (function() {
-            const body = document.body;
-            const themeToggle = document.getElementById('themeToggle');
             const inputEl = document.getElementById('inputText');
             const pasteBtn = document.getElementById('pasteButton');
             const outputContentDiv = document.getElementById('outputContent');
@@ -699,21 +621,29 @@
             const outSentSpan = document.getElementById('outSentCount');
             const outParaSpan = document.getElementById('outParaCount');
             const hiddenSpan = document.getElementById('hiddenCount');
+            const inputAIPercent = document.getElementById('inputAIPercent');
+            const outputAIPercent = document.getElementById('outputAIPercent');
             const distanceSlider = document.getElementById('distanceSlider');
             const manualCount = document.getElementById('manualCount');
-            const maxHidden = document.getElementById('maxHidden');
-            const maxBtn = document.getElementById('maxBtn');
             const distanceVal = document.getElementById('distanceVal');
-            const presetSelect = document.getElementById('presetSelect');
+            const presetLight = document.getElementById('presetLight');
+            const presetMedium = document.getElementById('presetMedium');
+            const presetExtreme = document.getElementById('presetExtreme');
+            const presetRandom = document.getElementById('presetRandom');
             const multiZwsp = document.getElementById('multiZWSP');
             const multiZwnj = document.getElementById('multiZWNJ');
             const multiZwj = document.getElementById('multiZWJ');
             const charOpts = [multiZwsp, multiZwnj, multiZwj];
-
+            const howToToggle = document.getElementById('howToToggle');
+            const howToContent = document.getElementById('howToContent');
             let activeChars = new Set(['\u200B', '\u200C', '\u200D']);
             let revealActive = false;
             let rawOutputText = '';
-
+            howToToggle.addEventListener('click', () => {
+                howToContent.classList.toggle('expanded');
+                howToToggle.querySelector('span:last-child').textContent = 
+                    howToContent.classList.contains('expanded') ? '▾' : '▸';
+            });
             function updateCharButtons() {
                 charOpts.forEach(btn => {
                     const char = btn.dataset.char === '\\u200B' ? '\u200B' : (btn.dataset.char === '\\u200C' ? '\u200C' : '\u200D');
@@ -734,7 +664,6 @@
             multiZwsp.addEventListener('click', () => toggleChar('\u200B', multiZwsp));
             multiZwnj.addEventListener('click', () => toggleChar('\u200C', multiZwnj));
             multiZwj.addEventListener('click', () => toggleChar('\u200D', multiZwj));
-
             function setPreset(amount, distance, chars) {
                 manualCount.value = amount;
                 distanceSlider.value = distance;
@@ -746,46 +675,41 @@
                 }
                 updateOutput();
             }
-
-            presetSelect.addEventListener('change', (e) => {
-                switch(e.target.value) {
-                    case 'light': setPreset(1, 10, ['\u200B']); break;
-                    case 'medium': setPreset(3, 3, ['\u200B', '\u200C']); break;
-                    case 'extreme': setPreset(7, 1, ['\u200B', '\u200C', '\u200D']); break;
-                    case 'random':
-                        const randAmount = Math.floor(Math.random() * 12) + 1;
-                        const randDist = Math.floor(Math.random() * 10) + 1;
-                        const all = ['\u200B', '\u200C', '\u200D'];
-                        const shuffled = all.sort(() => 0.5 - Math.random());
-                        const count = Math.floor(Math.random() * 3) + 1;
-                        setPreset(randAmount, randDist, shuffled.slice(0, count));
-                        break;
+            presetLight.addEventListener('click', () => setPreset(1, 10, ['\u200B']));
+            presetMedium.addEventListener('click', () => setPreset(3, 3, ['\u200B', '\u200C']));
+            presetExtreme.addEventListener('click', () => setPreset(7, 1, ['\u200B', '\u200C', '\u200D']));
+            presetRandom.addEventListener('click', () => {
+                const randAmount = Math.floor(Math.random() * 12) + 1;
+                const randDist = Math.floor(Math.random() * 10) + 1;
+                const all = ['\u200B', '\u200C', '\u200D'];
+                const shuffled = all.sort(() => 0.5 - Math.random());
+                const count = Math.floor(Math.random() * 3) + 1;
+                setPreset(randAmount, randDist, shuffled.slice(0, count));
+            });
+            pasteBtn.addEventListener('click', async () => {
+                try { 
+                    inputEl.value = await navigator.clipboard.readText(); 
+                    updateAll(); 
+                } catch { 
+                    alert('CLIPBOARD READ FAILED'); 
                 }
             });
-
-            themeToggle.addEventListener('click', () => {
-                body.classList.toggle('dark-mode');
-                themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
-            });
-
-            pasteBtn.addEventListener('click', async () => {
-                try { inputEl.value = await navigator.clipboard.readText(); updateAll(); }
-                catch { alert('CLIPBOARD READ FAILED'); }
-            });
-            
-            maxBtn.addEventListener('click', () => {
-                maxHidden.value = 15000;
-                distanceSlider.value = 1;
-                distanceVal.textContent = 1;
-                updateOutput();
-            });
-
             function countHiddenChars(str) {
                 let cnt = 0;
                 for (let ch of str) if (activeChars.has(ch)) cnt++;
                 return cnt;
             }
-
+            function calculateAIPercent(text, hiddenCount) {
+                if (text.length === 0) return 0;
+                if (hiddenCount > 500) return Math.min(5, Math.round((hiddenCount / text.length) * 100));
+                const visibleChars = text.length - hiddenCount;
+                const ratio = visibleChars / text.length;
+                return Math.min(100, Math.round(ratio * 100));
+            }
+            function updateAIColor(element, percent) {
+                element.style.color = `rgb(255, ${Math.floor(100 + (155 * (percent / 100)))}, 100)`;
+                element.textContent = `${percent}% AI`;
+            }
             function updateInputCounts() {
                 const text = inputEl.value;
                 charSpan.textContent = text.length;
@@ -804,51 +728,49 @@
                     paras = blocks.length || 1;
                 }
                 paraSpan.textContent = paras;
-                inputHiddenSpan.textContent = countHiddenChars(text);
+                const hiddenCount = countHiddenChars(text);
+                inputHiddenSpan.textContent = hiddenCount;
+                const aiPercent = calculateAIPercent(text, hiddenCount);
+                updateAIColor(inputAIPercent, aiPercent);
             }
-
             function randomCharFromSet() {
                 const arr = Array.from(activeChars);
                 return arr[Math.floor(Math.random() * arr.length)];
             }
-
             function generateInjectedText() {
                 const source = inputEl.value;
                 if (!source.trim()) return '';
                 let perGap = parseInt(manualCount.value, 10);
                 if (isNaN(perGap) || perGap < 1) perGap = 1;
                 const distance = parseInt(distanceSlider.value, 10);
-                let maxTotal = parseInt(maxHidden.value, 10);
-                if (isNaN(maxTotal) || maxTotal < 1) maxTotal = 15000;
                 const parts = source.split(/(\s+)/);
                 let result = '';
                 let wordIndex = 0;
-                let totalInserted = 0;
                 for (let i = 0; i < parts.length; i++) {
                     const seg = parts[i];
                     const isWs = /^\s+$/.test(seg);
                     if (!isWs && seg.length > 0) {
-                        result += seg;
-                        wordIndex++;
                         const nextIdx = i + 1;
                         const nextNextIdx = i + 2;
                         const hasNext = (nextIdx < parts.length && /^\s+$/.test(parts[nextIdx]) && nextNextIdx < parts.length && !/^\s+$/.test(parts[nextNextIdx]));
-                        if (hasNext && (wordIndex % distance === 0)) {
-                            let insertNow = Math.min(perGap, maxTotal - totalInserted);
-                            if (insertNow > 0) {
-                                for (let j = 0; j < insertNow; j++) {
-                                    result += randomCharFromSet();
-                                }
-                                totalInserted += insertNow;
+                        if (hasNext && (wordIndex + 1) % distance === 0) {
+                            for (let j = 0; j < perGap; j++) {
+                                result += randomCharFromSet();
                             }
                         }
+                        result += seg;
+                        if (hasNext && (wordIndex + 1) % distance === 0) {
+                            for (let j = 0; j < perGap; j++) {
+                                result += randomCharFromSet();
+                            }
+                        }
+                        wordIndex++;
                     } else {
                         result += seg;
                     }
                 }
                 return result;
             }
-
             function updateOutputStats(injected) {
                 rawOutputText = injected;
                 outCharSpan.textContent = injected.length;
@@ -867,14 +789,18 @@
                     p = b.length || 1;
                 }
                 outParaSpan.textContent = p;
-                hiddenSpan.textContent = countHiddenChars(injected);
+                const hiddenCount = countHiddenChars(injected);
+                hiddenSpan.textContent = hiddenCount;
+                const aiPercent = calculateAIPercent(injected, hiddenCount);
+                updateAIColor(outputAIPercent, aiPercent);
             }
-
             function renderOutput() {
                 const injected = generateInjectedText();
                 if (!inputEl.value.trim()) {
                     outputContentDiv.innerText = 'OUTPUT WILL APPEAR HERE';
                     outCharSpan.textContent = outWordSpan.textContent = outSentSpan.textContent = outParaSpan.textContent = hiddenSpan.textContent = '0';
+                    outputAIPercent.textContent = '0% AI';
+                    outputAIPercent.style.color = '';
                     rawOutputText = '';
                     return;
                 }
@@ -884,7 +810,7 @@
                     let html = '';
                     for (let ch of injected) {
                         if (activeChars.has(ch)) {
-                            html += `<span class="HIGHLIGHT-CHAR">␣</span>`;
+                            html += `<span class="highlight-char">␣</span>`;
                         } else {
                             html += ch;
                         }
@@ -893,16 +819,13 @@
                 }
                 updateOutputStats(injected);
             }
-
             function updateOutput() {
                 renderOutput();
             }
-
             function updateAll() {
                 updateInputCounts();
                 updateOutput();
             }
-
             distanceSlider.addEventListener('input', () => {
                 distanceVal.textContent = distanceSlider.value;
                 updateOutput();
@@ -913,33 +836,25 @@
                 manualCount.value = val;
                 updateOutput();
             });
-            maxHidden.addEventListener('input', () => {
-                let val = parseInt(maxHidden.value, 10);
-                if (isNaN(val) || val < 1) val = 1;
-                if (val > 15000) val = 15000;
-                maxHidden.value = val;
-                updateOutput();
-            });
             inputEl.addEventListener('input', updateAll);
-
             copyBtn.addEventListener('click', async () => {
                 if (!rawOutputText || rawOutputText === '') {
                     alert('NOTHING TO COPY');
                     return;
                 }
                 await navigator.clipboard.writeText(rawOutputText);
+                copyBtn.classList.add('copy-success');
                 copyBtn.innerHTML = '<span>✅</span> COPIED!';
                 setTimeout(() => {
-                    copyBtn.innerHTML = '<span>📋</span> COPY OUTPUT';
-                }, 1500);
+                    copyBtn.classList.remove('copy-success');
+                    copyBtn.innerHTML = '<span>📋</span> COPY';
+                }, 600);
             });
-
             revealBtn.addEventListener('click', () => {
                 revealActive = !revealActive;
-                revealBtn.textContent = revealActive ? '🔍 HIDE REVEAL' : '🔍 REVEAL HIDDEN';
+                revealBtn.textContent = revealActive ? '🔍 HIDE' : '🔍 REVEAL';
                 renderOutput();
             });
-
             updateCharButtons();
             updateAll();
         })();
