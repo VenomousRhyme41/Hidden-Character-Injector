@@ -507,7 +507,7 @@
             border: 1px solid var(--border-bright);
             border-radius: 2rem;
             padding: 2rem;
-            max-width: 400px;
+            max-width: 500px;
             width: 90%;
             position: relative;
             text-align: center;
@@ -538,6 +538,18 @@
         .modal-text {
             color: var(--text-muted);
             margin-bottom: 1rem;
+        }
+        .video-container {
+            margin: 1.5rem 0;
+            border-radius: 1rem;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            background: #000;
+        }
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
@@ -593,7 +605,7 @@
                     <span class="distance-value" id="distanceVal">1</span>
                 </div>
             </div>
-            <div class="edit-counter" id="editCounter">3 EDITS LEFT</div>
+            <div class="edit-counter" id="editCounter">10 EDITS LEFT</div>
         </div>
         <div class="content-panel">
             <div class="io-grid">
@@ -673,7 +685,10 @@
             <div class="modal-close" id="modalClose">✕</div>
             <div class="modal-text">NO EDITS REMAINING</div>
             <div class="modal-timer" id="modalTimer">15</div>
-            <div class="modal-text">PLEASE WAIT</div>
+            <div class="modal-text">PLEASE WAIT WHILE YOU ENJOY THIS VIDEO</div>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
     <script>
@@ -715,7 +730,7 @@
             let activeChars = new Set(['\u200B', '\u200C', '\u200D']);
             let revealActive = false;
             let rawOutputText = '';
-            let editsRemaining = 3;
+            let editsRemaining = 10;
             let timerInterval = null;
             let modalVisible = false;
             function getCookie(name) {
@@ -731,15 +746,15 @@
             if (savedEdits !== null && !isNaN(savedEdits)) {
                 editsRemaining = savedEdits;
             } else {
-                editsRemaining = 3;
-                setCookie('editsRemaining', 3, 30);
+                editsRemaining = 10;
+                setCookie('editsRemaining', 10, 30);
             }
             function updateEditDisplay() {
                 editCounter.textContent = editsRemaining + ' EDITS LEFT';
                 editCounter.classList.remove('edit-green', 'edit-yellow', 'edit-orange', 'edit-red');
-                if (editsRemaining === 3) editCounter.classList.add('edit-green');
-                else if (editsRemaining === 2) editCounter.classList.add('edit-yellow');
-                else if (editsRemaining === 1) editCounter.classList.add('edit-orange');
+                if (editsRemaining >= 7) editCounter.classList.add('edit-green');
+                else if (editsRemaining >= 4) editCounter.classList.add('edit-yellow');
+                else if (editsRemaining >= 1) editCounter.classList.add('edit-orange');
                 else editCounter.classList.add('edit-red');
                 setCookie('editsRemaining', editsRemaining, 30);
             }
@@ -759,7 +774,7 @@
                         timerInterval = null;
                         modalOverlay.style.display = 'none';
                         modalVisible = false;
-                        editsRemaining = 3;
+                        editsRemaining = 10;
                         updateEditDisplay();
                     }
                 }, 1000);
@@ -853,10 +868,13 @@
             }
             function calculateAIPercent(text, hiddenCount) {
                 if (text.length === 0) return 0;
-                if (hiddenCount > 500) return Math.min(5, Math.round((hiddenCount / text.length) * 100));
-                const visibleChars = text.length - hiddenCount;
-                const ratio = visibleChars / text.length;
-                return Math.min(100, Math.round(ratio * 100));
+                let ratio = hiddenCount / text.length;
+                if (hiddenCount >= 500) return 0;
+                if (hiddenCount >= 400) return Math.max(0, Math.min(10, Math.round(10 - (ratio * 20))));
+                if (hiddenCount >= 300) return Math.max(10, Math.min(25, Math.round(25 - (ratio * 30))));
+                if (hiddenCount >= 200) return Math.max(25, Math.min(50, Math.round(50 - (ratio * 40))));
+                if (hiddenCount >= 100) return Math.max(50, Math.min(75, Math.round(75 - (ratio * 30))));
+                return Math.max(75, Math.min(100, Math.round(100 - (ratio * 50))));
             }
             function updateAIColor(element, percent) {
                 element.style.color = `rgb(255, ${Math.floor(100 + (155 * (percent / 100)))}, 100)`;
