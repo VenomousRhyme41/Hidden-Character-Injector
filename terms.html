@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMS OF SERVICE · HIDDEN INJECTOR</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👻</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .legal-content, .legal-content * {
+            user-select: text;
+            -webkit-user-select: text;
+        }
+        :root {
+            --bg: #080b12;
+            --surface: rgba(255,255,255,0.04);
+            --surface-hover: rgba(255,255,255,0.07);
+            --border: rgba(255,255,255,0.08);
+            --border-bright: rgba(0,255,200,0.3);
+            --accent: #00ffc8;
+            --accent-dim: rgba(0,255,200,0.12);
+            --text: #e8edf5;
+            --text-muted: #6b7c93;
+            --glow: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,255,200,0.06) 0%, transparent 70%);
+            --radius-pill: 3rem;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --scrollbar-thumb: rgba(0,255,200,0.25);
+            --scrollbar-track: rgba(255,255,255,0.02);
+        }
+        body {
+            background: var(--bg);
+            background-image: var(--glow);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+        .app-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .policy-card {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            transition: var(--transition);
+        }
+        .back-link:hover {
+            border-color: var(--border-bright);
+            background: var(--surface-hover);
+        }
+        .policy-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        .policy-header h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .last-updated {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .legal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            color: var(--text);
+        }
+        .policy-section {
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 2rem;
+            background: rgba(0,0,0,0.1);
+        }
+        .policy-section h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .policy-section h2::before {
+            content: '▍';
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+        .policy-section p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .policy-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .policy-section li {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+        .policy-section li::before {
+            content: '⏺';
+            color: var(--accent);
+            font-size: 0.6rem;
+            position: absolute;
+            left: 0;
+            top: 0.4rem;
+        }
+        .highlight {
+            color: var(--accent);
+            font-weight: 500;
+            border-bottom: 1px dashed var(--border-bright);
+        }
+        .contact-block {
+            background: var(--surface-hover);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border-bright);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+        }
+        .site-footer {
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem 2rem;
+            flex: 1;
+        }
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: var(--transition);
+        }
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        .social-links {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            margin-left: auto;
+        }
+        .social-link {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+        .social-link:hover {
+            border-color: var(--border-bright);
+            color: var(--accent);
+            background: var(--surface-hover);
+        }
+        .social-link svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        .copyright {
+            color: var(--text-muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-align: center;
+            width: 100%;
+        }
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .policy-card { padding: 1.5rem; }
+            .policy-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="policy-card">
+            <a href="https://hiddencharacterinjector.online" class="back-link">
+                <span>←</span> BACK TO INJECTOR
+            </a>
+
+            <div class="policy-header">
+                <h1>TERMS OF SERVICE</h1>
+                <div class="last-updated">EFFECTIVE: MARCH 2026</div>
+            </div>
+
+            <div class="legal-content">
+                <div class="policy-section">
+                    <h2>1. ACCEPTANCE OF TERMS</h2>
+                    <p>By accessing or using <span class="highlight">HIDDEN CHARACTER INJECTOR</span> (the "Service"), you agree to be bound by these Terms. If you do not agree, do not use the Service. The Service is provided for personal, non-commercial use only. We reserve the right to modify these Terms at any time; continued use constitutes acceptance.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>2. DESCRIPTION OF SERVICE</h2>
+                    <p>The Service allows users to insert invisible Unicode characters (e.g., zero-width spaces) into text. All processing occurs <span class="highlight">locally in your browser</span>. No data is transmitted to our servers. We do not guarantee that injected text will remain invisible in all applications or platforms — some systems may render zero-width characters visibly.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>3. USER CONDUCT</h2>
+                    <p>You agree not to misuse the Service. For example, you will not:</p>
+                    <ul>
+                        <li>Use the Service to impersonate others or hide malicious content.</li>
+                        <li>Attempt to reverse-engineer, disrupt, or overload the Service.</li>
+                        <li>Distribute content that is illegal, harassing, or violates intellectual property rights.</li>
+                    </ul>
+                    <p>The Service is a neutral tool — responsibility for the text you create lies entirely with you.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>4. INTELLECTUAL PROPERTY</h2>
+                    <p>The Service itself (code, design, graphics) is open-source under the <span class="highlight">MIT License</span>. You are free to fork, modify, and use the code as permitted by that license. However, you may not claim ownership of the Service or redistribute it in a way that confuses users about its origin.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>5. DISCLAIMER OF WARRANTIES</h2>
+                    <p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE". WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE SERVICE WILL BE ERROR-FREE, UNINTERRUPTED, OR THAT INVISIBLE CHARACTERS WILL BEHAVE CONSISTENTLY ACROSS ALL PLATFORMS.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>6. LIMITATION OF LIABILITY</h2>
+                    <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL <span class="highlight">MORS TEAM</span> OR ITS CONTRIBUTORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR RELATING TO YOUR USE OF THE SERVICE. THIS INCLUDES LOSS OF DATA, REPUTATION, OR FINANCIAL LOSS, EVEN IF ADVISED OF THE POSSIBILITY.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>7. THIRD‑PARTY LINKS</h2>
+                    <p>The Service may contain links to external websites (e.g., GitHub, YouTube, Twitter). We are not responsible for their content or practices. Your use of linked sites is at your own risk and subject to their terms.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>8. INDEMNIFICATION</h2>
+                    <p>You agree to indemnify and hold harmless MORS TEAM and its affiliates from any claims, damages, or expenses arising out of your use of the Service, your violation of these Terms, or your violation of any rights of a third party.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>9. TERMINATION</h2>
+                    <p>We may suspend or terminate your access to the Service at any time, without notice, for conduct that we believe violates these Terms or is harmful to other users or the Service. Since the tool is client‑side, termination only affects access to the hosted page — you may still use the source code independently under the MIT license.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>10. GOVERNING LAW</h2>
+                    <p>These Terms shall be governed by the laws of <span class="highlight">United States of America</span>, without regard to its conflict of law provisions. Any disputes shall be resolved in the fictional courts of Mors City.</p>
+                </div>
+
+                <div class="policy-section">
+                    <h2>11. CONTACT</h2>
+                    <p>If you have any questions about these Terms, please reach out:</p>
+                    <div class="contact-block">
+                        <div>📧 legal@hiddencharacterinjector.online</div>
+                        <div>🐙 github.com/VenomousRhyme41/Hidden-Character-Injector</div>
+                        <div>📮 response time: 2–3 business days</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="site-footer">
+                <div class="footer-main">
+                    <div class="footer-links">
+                        <a href="https://hiddencharacterinjector.online/terms">TERMS OF SERVICE</a>
+                        <a href="https://hiddencharacterinjector.online/privacy">PRIVACY POLICY</a>
+                        <a href="https://hiddencharacterinjector.online/sitemap">SITEMAP</a>
+                        <a href="https://hiddencharacterinjector.online/about">ABOUT US</a>
+                        <a href="https://hiddencharacterinjector.online/contact">CONTACT</a>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://github.com/VenomousRhyme41/Hidden-Character-Injector" target="_blank" class="social-link">
+                            <svg viewBox="0 0 16 16">
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" target="_blank" class="social-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                        <a href="#" target="_blank" class="social-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22.018 5.924a8.464 8.464 0 0 1-2.437.668 4.256 4.256 0 0 0 1.866-2.35 8.493 8.493 0 0 1-2.696 1.03 4.242 4.242 0 0 0-7.224 3.87 12.04 12.04 0 0 1-8.74-4.43 4.242 4.242 0 0 0 1.313 5.663 4.204 4.204 0 0 1-1.92-.53v.053a4.245 4.245 0 0 0 3.4 4.158 4.21 4.21 0 0 1-1.91.072 4.244 4.244 0 0 0 3.963 2.945 8.506 8.506 0 0 1-5.27 1.817 8.61 8.61 0 0 1-1.01-.06 12.015 12.015 0 0 0 6.514 1.91c7.828 0 12.11-6.485 12.11-12.11 0-.185-.004-.37-.013-.553a8.64 8.64 0 0 0 2.122-2.202z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="copyright">© 2026 MORS TEAM. ALL RIGHTS RESERVED.</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
