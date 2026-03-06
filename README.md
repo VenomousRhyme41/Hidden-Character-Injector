@@ -11,7 +11,8 @@ Paste any text and inject invisible characters (zero-width spaces) between words
 
 **[Launch Hidden Character Injector →](https://venomousrhyme41.github.io/Hidden-Character-Injector/)**
 
-<img width="1918" height="866" alt="Hidden Character Injector Interface" src="https://github.com/user-attachments/assets/placeholder-image-screenshot.png" />
+<img width="1918" height="865" alt="image" src="https://github.com/user-attachments/assets/9baa0809-41e0-4261-ac51-ca1551378177" />
+
 
 ---
 
@@ -56,18 +57,6 @@ That's it. No setup, no downloads, no accounts needed.
 | **Per Gap** | Number of hidden characters inserted each time |
 | **Gap Every** | How often to insert: 1 = every word, 2 = every other word, etc. |
 | **Max Hidden** | Hard limit on total hidden characters injected |
-| **MAX Button** | Sets max hidden to 15,000 instantly |
-
----
-
-## Coming Soon
-
-- Export/import settings as JSON
-- Custom character input (any Unicode symbol)
-- Batch file processing (.txt upload/download)
-- Hidden character heat map visualization
-
-*These might happen eventually, no promises though*
 
 ---
 
