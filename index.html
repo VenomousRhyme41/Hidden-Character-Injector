@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>HIDDEN CHARACTER INJECTOR</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👻</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -516,17 +516,28 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-            background: transparent;
-            border: 1px solid var(--border);
+            background: var(--surface);
+            border: 1px solid var(--border-bright);
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-muted);
-            cursor: not-allowed;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
             opacity: 0.5;
+            pointer-events: none;
+        }
+        .modal-close.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-close:hover {
+            background: var(--accent-dim);
+            border-color: var(--accent);
         }
         .modal-timer {
             font-family: 'Space Mono', monospace;
@@ -539,17 +550,58 @@
             color: var(--text-muted);
             margin-bottom: 1rem;
         }
-        .video-container {
-            margin: 1.5rem 0;
-            border-radius: 1rem;
-            overflow: hidden;
-            aspect-ratio: 16 / 9;
-            background: #000;
-        }
-        .video-container iframe {
+        .ad-placeholder {
             width: 100%;
-            height: 100%;
-            border: none;
+            aspect-ratio: 16 / 9;
+            background: var(--surface-hover);
+            border: 2px dashed var(--border-bright);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.2em;
+        }
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .app-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .settings-panel {
+                position: relative;
+                top: 0;
+                width: 100%;
+                padding: 1.5rem;
+            }
+            .io-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            textarea, .output-display {
+                height: 250px;
+                min-height: 250px;
+            }
+            .footer-main {
+                flex-direction: column;
+                align-items: center;
+            }
+            .social-links {
+                margin-left: 0;
+            }
+            .stats-row {
+                gap: 0.8rem;
+                font-size: 0.6rem;
+            }
+            .action-btn {
+                padding: 0.3rem 0.8rem;
+                min-width: 70px;
+                font-size: 0.65rem;
+            }
         }
     </style>
 </head>
@@ -685,10 +737,8 @@
             <div class="modal-close" id="modalClose">✕</div>
             <div class="modal-text">NO EDITS REMAINING</div>
             <div class="modal-timer" id="modalTimer">15</div>
-            <div class="modal-text">PLEASE WAIT WHILE YOU ENJOY THIS VIDEO</div>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
+            <div class="modal-text">PLEASE WAIT</div>
+            <div class="ad-placeholder">AD</div>
         </div>
     </div>
     <script>
@@ -733,6 +783,9 @@
             let editsRemaining = 10;
             let timerInterval = null;
             let modalVisible = false;
+            let timeLeft = 15;
+            let isTimerRunning = false;
+            let isTabActive = true;
             function getCookie(name) {
                 let cookie = document.cookie.split('; ').find(row => row.startsWith(name + '='));
                 return cookie ? parseInt(cookie.split('=')[1]) : null;
@@ -758,27 +811,53 @@
                 else editCounter.classList.add('edit-red');
                 setCookie('editsRemaining', editsRemaining, 30);
             }
-            function showModal() {
-                if (modalVisible) return;
-                modalVisible = true;
-                modalOverlay.style.display = 'flex';
-                let timeLeft = 15;
-                modalTimer.textContent = timeLeft;
-                modalClose.style.cursor = 'not-allowed';
-                modalClose.style.opacity = '0.5';
+            function startTimer() {
+                if (timerInterval) clearInterval(timerInterval);
+                isTimerRunning = true;
                 timerInterval = setInterval(() => {
-                    timeLeft--;
-                    modalTimer.textContent = timeLeft;
-                    if (timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        timerInterval = null;
-                        modalOverlay.style.display = 'none';
-                        modalVisible = false;
-                        editsRemaining = 10;
-                        updateEditDisplay();
+                    if (isTabActive && timeLeft > 0) {
+                        timeLeft--;
+                        modalTimer.textContent = timeLeft;
+                        if (timeLeft === 0) {
+                            modalClose.classList.add('active');
+                        }
                     }
                 }, 1000);
             }
+            function pauseTimer() {
+                isTimerRunning = false;
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+            }
+            function showModal() {
+                if (modalVisible) return;
+                modalVisible = true;
+                timeLeft = 15;
+                modalTimer.textContent = timeLeft;
+                modalClose.classList.remove('active');
+                modalOverlay.style.display = 'flex';
+                startTimer();
+            }
+            function hideModal() {
+                if (modalVisible && timeLeft === 0) {
+                    pauseTimer();
+                    modalOverlay.style.display = 'none';
+                    modalVisible = false;
+                    editsRemaining = 10;
+                    updateEditDisplay();
+                }
+            }
+            document.addEventListener('visibilitychange', () => {
+                isTabActive = !document.hidden;
+                if (!isTabActive && modalVisible) {
+                    pauseTimer();
+                } else if (isTabActive && modalVisible && timeLeft > 0) {
+                    startTimer();
+                }
+            });
+            modalClose.addEventListener('click', hideModal);
             function decrementEdit() {
                 if (editsRemaining <= 0) {
                     showModal();
