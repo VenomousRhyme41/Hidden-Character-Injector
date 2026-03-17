@@ -22,13 +22,13 @@ Paste any text and inject invisible characters (zero-width spaces) between words
 Add invisible Unicode characters (U+200B, U+200C, U+200D) between words. Useful for watermarking text, creating unique strings, or testing hidden content detection.
 
 **Full Control**
-Set exactly how many characters go between each word, how often they appear (every word, every other word, etc.), and which hidden characters to use—choose one or multiple.
+Set exactly how many characters go between each word, how often they appear (every word, every other word, etc.), and which hidden characters to use, choose one or multiple.
 
 **Reveal Mode**
 Toggle "Reveal Hidden" to make invisible characters visible as highlighted ␣ symbols, so you can see exactly where they're placed without losing the ability to copy the raw text.
 
 **Max Limit Protection**
-Set a maximum total of hidden characters (up to 15,000) to prevent over-injection. The "MAX" button instantly sets it to the limit—perfect for filling text to a specific length.
+Set a maximum total of hidden characters (up to 15,000) to prevent over injection. The "MAX" button instantly sets it to the limit, perfect for filling text to a specific length.
 
 ---
 
