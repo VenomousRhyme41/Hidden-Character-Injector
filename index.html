@@ -188,7 +188,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 0.5rem;
         }
-        .preset-btn {
+        .preset-btn, .max-preset-btn {
             background: transparent;
             border: 1px solid var(--border);
             border-radius: var(--radius-pill);
@@ -201,13 +201,14 @@
             color: var(--text-muted);
             cursor: pointer;
             transition: var(--transition);
+            text-align: center;
         }
-        .preset-btn.active-preset {
+        .preset-btn.active-preset, .max-preset-btn.active-preset {
             border-color: var(--border-bright);
             color: var(--accent);
             background: var(--accent-dim);
         }
-        .preset-btn:hover {
+        .preset-btn:hover, .max-preset-btn:hover {
             border-color: var(--border-bright);
             color: var(--accent);
         }
@@ -675,7 +676,6 @@
                 font-size: 0.65rem;
             }
         }
-        script[type="application/ld+json"] { display: none; }
         .announcement-bar {
             position: fixed;
             top: 0;
@@ -683,7 +683,7 @@
             width: 100%;
             background: rgba(20, 30, 35, 0.85);
             color: #b0e0e6;
-            padding: 6px 20px;
+            padding: 12px 20px;
             font-family: 'Space Mono', monospace;
             font-size: 0.8rem;
             font-weight: 400;
@@ -766,15 +766,13 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
+        .max-preset-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
     </style>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Hidden Character Injector",
-      "url": "https://yourdomain.com/"
-    }
-    </script>
 </head>
 <body>
     <div id="announcementBar" class="announcement-bar">
@@ -808,6 +806,9 @@
                     <button class="preset-btn" id="presetMedium">MEDIUM</button>
                     <button class="preset-btn" id="presetExtreme">EXTREME</button>
                     <button class="preset-btn" id="presetRandom">RANDOM</button>
+                </div>
+                <div class="max-preset-container">
+                    <button class="max-preset-btn" id="maxButton">MAX (15K)</button>
                 </div>
             </div>
             <div class="settings-section">
@@ -951,6 +952,7 @@
             const presetMedium = document.getElementById('presetMedium');
             const presetExtreme = document.getElementById('presetExtreme');
             const presetRandom = document.getElementById('presetRandom');
+            const maxButton = document.getElementById('maxButton');
             const multiZwsp = document.getElementById('multiZWSP');
             const multiZwnj = document.getElementById('multiZWNJ');
             const multiZwj = document.getElementById('multiZWJ');
@@ -978,6 +980,7 @@
             let lastInputValue = '';
             let randomModeActive = false;
             let currentPreset = null;
+            let maxModeActive = false;
 
             fetch('https://raw.githubusercontent.com/VenomousRhyme41/multi-stream-announcement-text-/refs/heads/main/textt.txt')
                 .then(response => response.text())
@@ -999,7 +1002,7 @@
                         announcementBar.style.display = 'none';
                     }
                 }, 500);
-            }, 5000);
+            }, 6500);
 
             function showRandomNotification() {
                 randomNotification.textContent = 'Using random preset injects hidden character into words so it might mess up things and might set off red flags. If just placing it into a text box the words might all show up as miss spelled.';
@@ -1126,8 +1129,9 @@
                 }
                 updateCharButtons();
                 randomModeActive = false;
+                maxModeActive = false;
                 currentPreset = null;
-                document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active-preset'));
+                document.querySelectorAll('.preset-btn, .max-preset-btn').forEach(btn => btn.classList.remove('active-preset'));
                 updateOutput();
             }
 
@@ -1145,8 +1149,9 @@
                     updateCharButtons();
                 }
                 randomModeActive = isRandom;
+                maxModeActive = false;
                 if (presetElement) {
-                    document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active-preset'));
+                    document.querySelectorAll('.preset-btn, .max-preset-btn').forEach(btn => btn.classList.remove('active-preset'));
                     presetElement.classList.add('active-preset');
                     currentPreset = presetElement;
                 }
@@ -1163,6 +1168,54 @@
                 const all = ['\u200B', '\u200C', '\u200D'];
                 const shuffled = all.sort(() => 0.5 - Math.random());
                 setPreset(1, 1, [shuffled[0]], true, e.target);
+            });
+
+            maxButton.addEventListener('click', () => {
+                const source = inputEl.value;
+                if (!source.trim()) {
+                    alert('PLEASE ENTER SOME TEXT FIRST');
+                    return;
+                }
+                if (maxModeActive) {
+                    maxModeActive = false;
+                    maxButton.classList.remove('active-preset');
+                    if (currentPreset) {
+                        currentPreset.classList.add('active-preset');
+                    }
+                    updateAll();
+                    return;
+                }
+                if (!decrementIfTextChanged(source + ' ')) return;
+                const targetLength = 15000;
+                const currentLength = source.length;
+                if (currentLength >= targetLength) {
+                    alert('TEXT IS ALREADY 15K+ CHARACTERS');
+                    return;
+                }
+                const charsToAdd = targetLength - currentLength;
+                const hiddenChars = Array.from(activeChars);
+                if (hiddenChars.length === 0) {
+                    alert('PLEASE SELECT AT LEAST ONE HIDDEN CHARACTER');
+                    return;
+                }
+                let padding = '';
+                for (let i = 0; i < charsToAdd; i++) {
+                    padding += hiddenChars[Math.floor(Math.random() * hiddenChars.length)];
+                }
+                const words = source.split(/(\s+)/);
+                if (words.length > 2) {
+                    const insertPos = Math.floor(words.length / 2);
+                    words.splice(insertPos, 0, padding);
+                    inputEl.value = words.join('');
+                } else {
+                    inputEl.value = source + ' ' + padding;
+                }
+                randomModeActive = false;
+                maxModeActive = true;
+                document.querySelectorAll('.preset-btn, .max-preset-btn').forEach(btn => btn.classList.remove('active-preset'));
+                maxButton.classList.add('active-preset');
+                currentPreset = null;
+                updateAll();
             });
 
             pasteBtn.addEventListener('click', async () => {
@@ -1351,6 +1404,10 @@
             inputEl.addEventListener('input', () => {
                 const newVal = inputEl.value;
                 if (decrementIfTextChanged(newVal)) {
+                    if (maxModeActive) {
+                        maxModeActive = false;
+                        maxButton.classList.remove('active-preset');
+                    }
                     updateAll();
                 }
             });
@@ -1358,10 +1415,12 @@
             distanceSlider.addEventListener('input', () => {
                 distanceVal.textContent = distanceSlider.value;
                 randomModeActive = false;
+                maxModeActive = false;
                 if (currentPreset) {
                     currentPreset.classList.remove('active-preset');
                     currentPreset = null;
                 }
+                maxButton.classList.remove('active-preset');
                 updateOutput();
             });
 
@@ -1370,10 +1429,12 @@
                 if (isNaN(val) || val < 1) val = 1;
                 manualCount.value = val;
                 randomModeActive = false;
+                maxModeActive = false;
                 if (currentPreset) {
                     currentPreset.classList.remove('active-preset');
                     currentPreset = null;
                 }
+                maxButton.classList.remove('active-preset');
                 updateOutput();
             });
 
